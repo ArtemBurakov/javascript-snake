@@ -3,17 +3,17 @@ const ctx = canvas.getContext("2d");
 const scale = 10;
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
+let running = false;
 
 let snake = new Snake();
 let food = new Food();
 
 function setUp() {
+  running = true;
   food.generate();
 
-  window.setInterval(() => {
-
+  interval = window.setInterval(() => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    snake.check();
     food.draw();
     snake.update();
     snake.draw();
@@ -21,8 +21,13 @@ function setUp() {
 }
 
 window.addEventListener('keydown', ((evt) => {
+  if (evt.keyCode == 32 && running == false) {
+    setUp();
+  }
   const direction = evt.key.replace('Arrow', '');
   snake.changeDirection(direction);
 }));
 
-setUp();
+window.onload = () => {
+  snake.draw();
+}

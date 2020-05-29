@@ -17,14 +17,17 @@ class Snake {
     ctx.fillRect(this.x, this.y, scale, scale);
   }
 
-  gameover() {
+  gameOver() {
     this.x = 0;
     this.y = 0;
     this.xSpeed = scale;
     this.ySpeed = 0;
     this.total = 0;
     this.tail = [];
-    food.generate();
+    clearInterval(interval);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.draw();
+    running = false;
   }
 
   update() {
@@ -37,20 +40,32 @@ class Snake {
     this.x += this.xSpeed;
     this.y += this.ySpeed;
 
+    //check borders
+    for (let i = 0; i < this.tail.length; i++) {
+      if (this.x == this.tail[i].x && this.y == this.tail[i].y) {
+        this.gameOver();
+      }
+    }
+
     if (this.x > canvas.width) {
-      this.gameover();
+      this.gameOver();
     }
 
     if (this.y > canvas.height) {
-      this.gameover();
+      this.gameOver();
     }
 
     if (this.x < 0) {
-      this.gameover();
+      this.gameOver();
     }
 
     if (this.y < 0) {
-      this.gameover();
+      this.gameOver();
+    }
+
+    //check food
+    if (snake.eat(food)) {
+      food.generate();
     }
   }
 
@@ -81,16 +96,5 @@ class Snake {
       return true;
     }
     return false;
-  }
-
-  check() {
-    for (let i = 0; i < this.tail.length; i++) {
-      if (this.x == this.tail[i].x && this.y == this.tail[i].y) {
-        this.gameover();
-      }
-    }
-    if (snake.eat(food)) {
-      food.generate();
-    }
   }
 }

@@ -10,7 +10,6 @@ class Food{
 
     for (let i = 0; i < snake.tail.length; i++) {
       if (this.x == snake.tail[i].x && this.y == snake.tail[i].y) {
-        console.log('yes');
         this.generate();
       } else {
         this.draw();
